@@ -1,0 +1,10 @@
+# Copy to config.local.toml and edit locally; the local copy is gitignored.
+# Source should be on a case-sensitive filesystem and treated as read-only.
+[paths]
+source = "/mnt/geocities/source"
+work = "/var/lib/geocities/work"
+archive = "/mnt/geocities/archive"
+
+[limits]
+# The foundation scanner is capped; it is NOT a full-corpus processor.
+max_entries = 10000
