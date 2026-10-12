@@ -1,64 +1,78 @@
 # GeoCities Reconstruction
 
-Modern reconstruction pipeline for the Archive Team GeoCities collection.
+Modern, preservation-first reconstruction tooling for the Archive Team
+GeoCities collections. This is a work in progress, not yet a production
+restoration pipeline.
 
-This branch is the active rebuild of the project for current operating systems, with Ubuntu 26.04 LTS as the primary target and macOS support planned for case-sensitive APFS volumes.
+This repository descends from
+[Dragan Espenschied's original work](https://github.com/despens/Geocities),
+through `kyledrake/Geocities`. The original tools were developed for Ubuntu
+12.04 and released under AGPL-3.0-or-later. The historic project licence is
+retained in `LICENSE` and `agpl3.txt`.
 
-The previous 2022 implementation is preserved in the [`2022-archived`](../../tree/2022-archived) branch.
+The earlier NixMcRetro reconstruction scripts and history live on
+[`2022-archived`](../../tree/2022-archived). Do not run the old
+scripts against originals without separate review: some delete, move or
+rewrite archive files.
 
-## Goals
+## Current status
 
-- rebuild the GeoCities preservation pipeline on current operating systems
-- preserve the original Archive Team data without silently losing filenames or case distinctions
-- replace obsolete platform dependencies such as `gvfs-info`
-- support modern PostgreSQL and 7-Zip tooling
-- make destructive operations safer and easier to audit
-- add dry-run support, preflight checks, resumable stages and validation
-- build a small representative test corpus before processing the full archive
-- retain useful algorithms and preservation work from the 2022 implementation where they still make sense
+The `develop-ubuntu-2604` branch contains a **read-only pilot**:
+- source preflight checks and a deliberately small test fixture;
+- SHA-256 inventory, timestamps and original filename-byte recording;
+- reporting of case-insensitive filename collisions;
+- symlink recording without following directory symlinks;
+- refusal to overwrite manifests or write them inside the source;
+- compatibility tests for Ubuntu 24.04 and 26.04.
 
-## Platform targets
+**Not implemented:** extracting real 7z/tar collections, full-scale
+reconstruction, database migrations, archive serving or resumable batches.
 
-### Ubuntu 26.04 LTS
+## Platforms
 
-This will be the primary supported platform.
+Primary target: Ubuntu 26.04 LTS on a case-sensitive Linux filesystem.
+Secondary CI target: Ubuntu 24.04 LTS. The pilot uses only the Python 3.12+
+standard library and does not require PostgreSQL yet.
 
-### macOS
+For the N100 NUC, keep original GeoCities files on the external 2 TB SSD,
+with small test data and manifests on the internal SSD. Do not attempt a full
+archive run without checking capacity. Avoid exFAT for archive working data.
 
-macOS support is planned, but the source and working data must live on a case-sensitive APFS volume. The GeoCities archive contains paths whose names differ only by case, so a normal case-insensitive macOS volume is not suitable for reconstruction work.
+## Try the non-destructive pilot
 
-## Project history
+From the repository root on Ubuntu (Python 3.12 or newer):
 
-This repository derives from the GeoCities preservation work originally developed by Dragan Espenschied and other contributors to the One Terabyte of Kilobyte Age project.
+```sh
+python3 scripts/create_fixture.py /tmp/geocities-fixture
+python3 -m geocities_rebuild preflight --source /tmp/geocities-fixture
+python3 -m geocities_rebuild scan --source /tmp/geocities-fixture --output /tmp/geocities-test.manifest.json
+python3 -m unittest discover -s tests -v
+```
 
-NixMcRetro's 2022 reconstruction pipeline expanded that work to merge and process several Archive Team GeoCities collections. That implementation and its full history are retained in the `2022-archived` branch.
+The fixture generator refuses to reuse an existing directory. The scan reads
+and hashes files but never changes the source. The manifest is created only
+if the requested output does not already exist. Remove the temporary fixture
+and manifest manually when finished.
 
-The `main` branch is a fresh modernisation effort started in 2026.
+For local paths, copy `config.example.toml` to `config.local.toml` and edit
+it. The local config is excluded from Git.
 
-## Archive sources
+```sh
+python3 -m geocities_rebuild --config config.local.toml preflight
+python3 -m geocities_rebuild --config config.local.toml scan --output /tmp/my-test.manifest.json
+```
 
-The rebuild is intended to work with the major preserved GeoCities collections used by the earlier pipeline, including:
+The default scan limit is 10,000 entries and is deliberately unsuitable for
+the full GeoCities collection. The preflight does not yet establish the disk
+capacity needed for complete reconstruction.
 
-- Archive Team GeoCities Snapshot
-- GeoCities Chronomex
-- GeoCities JCN Grab
-- GeoCities Latecomer
-- GeoCities Santiago Grab
+## Roadmap and review
 
-The exact source manifests, checksums and acquisition instructions will be documented as the modern pipeline is rebuilt.
+See [docs/ROADMAP.md](docs/ROADMAP.md). Develop on a separate branch and
+review before merging into `main`. Historical branches remain unchanged.
 
-## Status
+## Licence and attribution
 
-Early rebuild.
-
-The first priority is to create a safe, reproducible development fixture that exercises the difficult parts of the original archive before running any code against the full dataset.
-
-## Historical implementation
-
-For the Ubuntu 12.04 based 2022 implementation, scripts and notes, see:
-
-[`2022-archived`](../../tree/2022-archived)
-
-## License
-
-Licensing and attribution from the original project and the 2022 implementation will be preserved as code is brought forward into the modern branch.
+AGPL-3.0-or-later. Preserve original author and contributor attribution when
+carrying forward historical scripts. Archive content may have different rights
+and is **not** part of this Git repository.

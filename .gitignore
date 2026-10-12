@@ -1,0 +1,24 @@
+# Local environments and generated files
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+*.egg-info/
+build/
+dist/
+config.local.toml
+*.local.toml
+
+# Never add archive material, test outputs or secrets to Git
+data/
+source/
+work/
+archive/
+logs/
+manifests/
+*.manifest.json
+*.manifest.jsonl
+.env
+.env.*
+!.env.example
