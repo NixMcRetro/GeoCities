@@ -4,6 +4,11 @@ Modern, preservation-first reconstruction tooling for the Archive Team
 GeoCities collections. This is a work in progress, not yet a production
 restoration pipeline.
 
+> **Restart here (23rd November 2026):** Read the
+> [full handover](docs/HANDOVER-2026-11-23.md) and
+> [agent safety rules](AGENTS.md). The N100 is currently doing other work,
+> so development must not disturb its existing services or the sole 2 TB SSD.
+
 This repository descends from
 [Dragan Espenschied's original work](https://github.com/despens/Geocities),
 through `kyledrake/Geocities`. The original tools were developed for Ubuntu
