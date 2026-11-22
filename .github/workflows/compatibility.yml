@@ -1,0 +1,34 @@
+name: Ubuntu compatibility (foundation)
+
+on:
+  push:
+    branches:
+      - develop-ubuntu-2604
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    name: Ubuntu ${{ matrix.ubuntu }} standard-library tests
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu: ["24.04", "26.04"]
+    container:
+      image: ubuntu:${{ matrix.ubuntu }}
+    steps:
+      - name: Install runtime and checkout prerequisites
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 git ca-certificates tar unzip
+      - uses: actions/checkout@v4
+      - name: Compile Python modules
+        run: python3 -m compileall -q geocities_rebuild scripts tests
+      - name: Run non-destructive fixture tests
+        run: python3 -m unittest discover -s tests -v
