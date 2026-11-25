@@ -1,43 +1,34 @@
-# GeoCities Reconstruction
+# 🌐 GeoCities Reconstruction
 
-Modern reconstruction pipeline for the Archive Team GeoCities collection.
+**Rebuilding a little corner of the old web, one preserved file at a time.**
 
-This branch is the active rebuild of the project for current operating systems, with Ubuntu 26.04 LTS as the primary target and macOS support planned for case-sensitive APFS volumes.
+A modern reconstruction pipeline for the Archive Team GeoCities collection, bringing the 2022 preservation work forward to current operating systems.
 
-The previous 2022 implementation is preserved in the [`2022-archived`](../../tree/2022-archived) branch.
+🚧 **Status: Early rebuild.** The modern pipeline is still being developed. A small, reproducible test corpus comes first, before processing the full archive.
 
-## Goals
+[📼 Explore the 2022 implementation](../../tree/2022-archived)
 
-- rebuild the GeoCities preservation pipeline on current operating systems
-- preserve the original Archive Team data without silently losing filenames or case distinctions
-- replace obsolete platform dependencies such as `gvfs-info`
-- support modern PostgreSQL and 7-Zip tooling
-- make destructive operations safer and easier to audit
-- add dry-run support, preflight checks, resumable stages and validation
-- build a small representative test corpus before processing the full archive
-- retain useful algorithms and preservation work from the 2022 implementation where they still make sense
+## 🛠️ What are we rebuilding?
 
-## Platform targets
+- 💾 Preserve original archive data, filenames, and case distinctions.
+- 🐧 Replace obsolete dependencies such as `gvfs-info` with modern tooling.
+- 🗃️ Support modern PostgreSQL and 7-Zip.
+- 🛡️ Make destructive operations safer with dry runs, preflight checks, and validation.
+- 🔁 Add resumable stages and reproducible test fixtures.
+- 🧩 Retain useful algorithms and preservation work from the earlier implementation.
 
-### Ubuntu 26.04 LTS
+## 💻 Platform targets
 
-This will be the primary supported platform.
+| Platform | Status |
+| --- | --- |
+| Ubuntu 26.04 LTS | Primary target |
+| macOS | Planned, requires case-sensitive APFS |
 
-### macOS
+⚠️ The GeoCities archive contains paths whose names differ only by case. A normal case-insensitive macOS volume is not suitable for reconstruction.
 
-macOS support is planned, but the source and working data must live on a case-sensitive APFS volume. The GeoCities archive contains paths whose names differ only by case, so a normal case-insensitive macOS volume is not suitable for reconstruction work.
+## 📦 The digital time capsules
 
-## Project history
-
-This repository derives from the GeoCities preservation work originally developed by Dragan Espenschied and other contributors to the One Terabyte of Kilobyte Age project.
-
-NixMcRetro's 2022 reconstruction pipeline expanded that work to merge and process several Archive Team GeoCities collections. That implementation and its full history are retained in the `2022-archived` branch.
-
-The `main` branch is a fresh modernisation effort started in 2026.
-
-## Archive sources
-
-The rebuild is intended to work with the major preserved GeoCities collections used by the earlier pipeline, including:
+The rebuild is intended to process these preserved collections:
 
 - Archive Team GeoCities Snapshot
 - GeoCities Chronomex
@@ -45,20 +36,18 @@ The rebuild is intended to work with the major preserved GeoCities collections u
 - GeoCities Latecomer
 - GeoCities Santiago Grab
 
-The exact source manifests, checksums and acquisition instructions will be documented as the modern pipeline is rebuilt.
+Exact source manifests, checksums, and acquisition instructions will be documented as the modern pipeline is rebuilt.
 
-## Status
+## 📼 A little history
 
-Early rebuild.
+This repository derives from the GeoCities preservation work originally developed by Dragan Espenschied and other contributors to One Terabyte of Kilobyte Age.
 
-The first priority is to create a safe, reproducible development fixture that exercises the difficult parts of the original archive before running any code against the full dataset.
+Nix McRetro's 2022 reconstruction pipeline expanded that work to merge and process several Archive Team collections. Its full history, scripts, and Ubuntu 12.04 notes live in the [2022-archived branch](../../tree/2022-archived).
 
-## Historical implementation
+The main branch is a fresh modernisation effort started in 2026.
 
-For the Ubuntu 12.04 based 2022 implementation, scripts and notes, see:
-
-[`2022-archived`](../../tree/2022-archived)
-
-## License
+## ❤️ Preservation and licensing
 
 Licensing and attribution from the original project and the 2022 implementation will be preserved as code is brought forward into the modern branch.
+
+**The old web deserves a second life. 💾**
